@@ -1,153 +1,129 @@
-public class AVL {
-    
-}
-
-public class AVLTree<T extends Comparable<T>> {
-
-    private class Node {
-        T data;
-        Node left;
-        Node right;
-        int height;
-        
-        Node(T data) {
-            this.data = data;
-            this.height = 1;
-        }
-    }
-    
-    private Node root;
-    private BST<T> bst;
+public class AVLTree {
+    Node root;
 
     public AVLTree() {
-        this.root = null;
-        this.bst = new BST<>();
+        root = null;
     }
 
-    public void insert(T data) {
-        root = insert(root, data);
+    public void insert(int key) {
+        root = insertRec(root, key);
     }
 
-    private Node insert(Node node, T data) {
-        if (node == null) {
-            return new Node(data);
-        }
-        
-        if (data.compareTo(node.data) < 0) {
-            node.left = insert(node.left, data);
-        } else if (data.compareTo(node.data) > 0) {
-            node.right = insert(node.right, data);
-        } else {
-            return node;
+    public Node insertRec(Node root, int key) {
+        if (root == null) {
+            root = new Node(key);
+            return root;
         }
 
-        // Update height of ancestor node
-        node.height = 1 + Math.max(height(node.left), height(node.right));
-        
-        // Check if node is unbalanced
-        int balance = getBalance(node);
+        if (key < root.key)
+            root.left = insertRec(root.left, key);
+        else if (key > root.key)
+            root.right = insertRec(root.right, key);
+        else // Duplicate keys not allowed
+            return root;
+
+        // Update height of current node
+        root.height = 1 + Math.max(height(root.left), height(root.right));
+
+        // Get the balance factor of this node
+        int balance = getBalance(root);
+
+        // If this node becomes unbalanced, then there are 4 cases
 
         // Left Left Case
-        if (balance > 1 && data.compareTo(node.left.data) < 0) {
-            return rightRotate(node);
-        }
-        
+        if (balance > 1 && key < root.left.key)
+            return rightRotate(root);
+
         // Right Right Case
-        if (balance < -1 && data.compareTo(node.right.data) > 0) {
-            return leftRotate(node);
-        }
-        
+        if (balance < -1 && key > root.right.key)
+            return leftRotate(root);
+
         // Left Right Case
-        if (balance > 1 && data.compareTo(node.left.data) > 0) {
-            node.left = leftRotate(node.left);
-            return rightRotate(node);
+        if (balance > 1 && key > root.left.key) {
+            root.left = leftRotate(root.left);
+            return rightRotate(root);
         }
-        
+
         // Right Left Case
-        if (balance < -1 && data.compareTo(node.right.data) < 0) {
-            node.right = rightRotate(node.right);
-            return leftRotate(node);
-        }
-        
-        // No balance issues
-        return node;
-    }
-
-    private AVLTree<T>.Node leftRotate(AVLTree<T>.Node node) {
-        return null;
-    }
-
-    private AVLTree<T>.Node rightRotate(AVLTree<T>.Node node) {
-        return null;
-    }
-
-    private int getBalance(AVLTree<T>.Node node) {
-        return 0;
-    }
-
-    private int height(AVLTree<T>.Node left) {
-        return 0;
-    }
-
-    public void delete(T data) {
-        root = delete(root, data);
-    }
-
-    private Node delete(Node node, T data) {
-        if (node == null) {
-            return node;
+        if (balance < -1 && key < root.right.key) {
+            root.right = rightRotate(root.right);
+            return leftRotate(root);
         }
 
-        if (data.compareTo(node.data) < 0) {
-            node.left = delete(node.left, data);
-        } else if (data.compareTo(node.data) > 0) {
-            node.right = delete(node.right, data);
-        } else {
-            if ((node.left == null) || (node.right == null)) {
-                Node temp = null;
-                if (temp == node.left) {
-                    temp = node.right;
-                } else {
-                    temp = node.left;
-                }
+        return root;
+    }
 
-                if (temp == null) {
-                    temp = node;
-                    node = null;
-                } else {
-                    node = temp;
-                }
-            } else {
-                Node temp = minValueNode(node.right);
-                node.data = temp.data;
-                node.right = delete(node.right, temp.data);
-            }
-        }
+    public void inorder() {
+        inorderRec(root);
+    }
 
-        if (node == null) {
-            return node;
-        }
-
-        // Update height of ancestor node
-        node.height = 1 + Math.max(height(node.left), height(node.right));
-
-        // Check if node is unbalanced
-        int balance = getBalance(node);
-
-        // Left Left Case
-        if (balance > 1 && getBalance(node.left) >= 0) {
-            return rightRotate(node);
-        }
-
-        // Left Right Case
-        if (balance > 1 && getBalance(node.left) < 0) {
-            node.left = leftRotate(node.left);
-            return rightRotate(node);
-       
+    public void inorderRec(Node root) {
+        if (root != null) {
+            inorderRec(root.left);
+            System.out.println(root.key);
+            inorderRec(root.right);
         }
     }
 
-    private AVLTree<T>.Node minValueNode(AVLTree<T>.Node right) {
-        return null;
+    // Utility functions to get height and balance factor of a node
+    public int height(Node N) {
+        if (N == null)
+            return 0;
+
+        return N.height;
+    }
+
+    public int getBalance(Node N) {
+        if (N == null)
+            return 0;
+
+        return height(N.left) - height(N.right);
+    }
+
+    // Rotation functions
+    public Node rightRotate(Node y) {
+        Node x = y.left;
+        Node T2 = x.right;
+
+        // Perform rotation
+        x.right = y;
+        y.left = T2;
+
+        // Update heights
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
+        x.height = Math.max(height(x.left), height(x.right)) + 1;
+
+        // Return new root
+        return x;
+    }
+
+    public Node leftRotate(Node x) {
+        Node y = x.right;
+        Node T2 = y.left;
+
+        // Perform rotation
+        y.left = x;
+        x.right = T2;
+
+        // Update heights
+        x.height = Math.max(height(x.left), height(x.right)) + 1;
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
+
+        // Return new root
+        return y;
+    }
+
+    public static void main(String[] args) {
+        AVLTree tree = new AVLTree();
+
+        tree.insert(50);
+        tree.insert(30);
+        tree.insert(20);
+        tree.insert(40);
+        tree.insert(70);
+        tree.insert(60);
+        tree.insert(80);
+
+        tree.inorder();
     }
 }
