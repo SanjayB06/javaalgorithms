@@ -63,7 +63,7 @@ class BST {
 }
 
 
-public class AVLTree extends BST  {
+class AVLTree extends BST  {
     Node root;
 
     public AVLTree() {
@@ -182,17 +182,47 @@ public class AVLTree extends BST  {
         return y;
     }
 
+    // public static void main(String[] args) {
+    //     AVLTree tree = new AVLTree();
+
+    //     tree.insert(50);
+    //     tree.insert(53);
+    //     tree.insert(20);
+    //     tree.insert(40);
+    //     tree.insert(1);
+    //     tree.insert(60);
+    //     tree.insert(614);
+
+    //     tree.inorder();
+    // }
+
+
+
+}
+
+
+public class Main {
     public static void main(String[] args) {
-        AVLTree tree = new AVLTree();
+        AVLTree avltree = new AVLTree();
+        avltree.insert(5);
+        avltree.insert(10);
+        avltree.insert(15);
+        avltree.insert(20);
+        avltree.insert(25);
+        avltree.insert(30);
 
-        tree.insert(50);
-        tree.insert(53);
-        tree.insert(20);
-        tree.insert(40);
-        tree.insert(1);
-        tree.insert(60);
-        tree.insert(614);
+        avltree.inorder();
 
-        tree.inorder();
+        BST bsttree = new BST();
+        bsttree.insert(5);
+        bsttree.insert(10);
+        bsttree.insert(15);
+        bsttree.insert(20);
+        bsttree.insert(25);
+        bsttree.insert(30);
+
+        bsttree.inorder();
+
+        
     }
 }
