@@ -63,10 +63,11 @@ class BST {
 }
 
 
-public class AVLTree {
+public class AVLTree extends BST  {
     Node root;
 
     public AVLTree() {
+        super();
         root = null;
     }
 
@@ -74,6 +75,11 @@ public class AVLTree {
         root = insertRec(root, key);
     }
 
+    public void inorder() {
+        inorderRec(root);
+    }
+
+    @Override
     public Node insertRec(Node root, int key) {
         if (root == null) {
             root = new Node(key);
@@ -118,17 +124,15 @@ public class AVLTree {
         return root;
     }
 
-    public void inorder() {
-        inorderRec(root);
-    }
+    // Function is being inherited from parent BST class
 
-    public void inorderRec(Node root) {
+    /*public void inorderRec(Node root) {
         if (root != null) {
             inorderRec(root.left);
             System.out.println(root.key);
             inorderRec(root.right);
         }
-    }
+    }*/
 
     // Utility functions to get height and balance factor of a node
     public int height(Node N) {
@@ -182,12 +186,12 @@ public class AVLTree {
         AVLTree tree = new AVLTree();
 
         tree.insert(50);
-        tree.insert(30);
+        tree.insert(53);
         tree.insert(20);
         tree.insert(40);
-        tree.insert(70);
+        tree.insert(1);
         tree.insert(60);
-        tree.insert(80);
+        tree.insert(614);
 
         tree.inorder();
     }
