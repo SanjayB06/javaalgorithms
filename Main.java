@@ -211,8 +211,10 @@ public class Main {
         avltree.insert(25);
         avltree.insert(30);
 
+        System.out.println("AVL Output: ");
         avltree.inorder();
-
+        System.out.println(" ");
+        System.out.println("BST Output: ");
         BST bsttree = new BST();
         bsttree.insert(5);
         bsttree.insert(10);
