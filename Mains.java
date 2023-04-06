@@ -47,7 +47,7 @@ class BST {
         }
     }
 
-    // public static void main(String[] args) {
+    // public static void mains(String[] args) {
     //     BST tree = new BST();
 
     //     tree.insert(50);
@@ -182,7 +182,7 @@ class AVLTree extends BST  {
         return y;
     }
 
-    // public static void main(String[] args) {
+    // public static void mains(String[] args) {
     //     AVLTree tree = new AVLTree();
 
     //     tree.insert(50);
@@ -201,8 +201,8 @@ class AVLTree extends BST  {
 }
 
 
-public class Main {
-    public static void main(String[] args) {
+public class Mains {
+    public static void mains(String[] args) {
         AVLTree avltree = new AVLTree();
         avltree.insert(5);
         avltree.insert(10);
